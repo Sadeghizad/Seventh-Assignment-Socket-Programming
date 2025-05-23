@@ -101,7 +101,7 @@ public class Client {
     }
 
     private static void uploadFile(Scanner scanner) throws IOException {
-        Path userDir = Paths.get("resources/Client/" + username);
+        Path userDir = Paths.get("D:\\Documents\\IdeaProjects\\Seventh-Assignment-Socket-Programming\\src\\main\\resources\\Client\\" + username);
         if (!Files.exists(userDir)) {
             Files.createDirectories(userDir);
         }
@@ -190,7 +190,7 @@ public class Client {
         out.println("DOWNLOAD:" + selectedFile);
 
         // Create user directory if it doesn't exist
-        Path userDir = Paths.get("resources/Client/" + username);
+        Path userDir = Paths.get("D:\\Documents\\IdeaProjects\\Seventh-Assignment-Socket-Programming\\src\\main\\resources\\Client\\" + username);
         if (!Files.exists(userDir)) {
             Files.createDirectories(userDir);
         }

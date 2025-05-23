@@ -101,7 +101,7 @@ public class ClientHandler implements Runnable {
     }
 
     private void sendFileList() throws IOException {
-        Path serverDir = Paths.get("resources/Server");
+        Path serverDir = Paths.get("D:\\Documents\\IdeaProjects\\Seventh-Assignment-Socket-Programming\\src\\main\\resources\\Server\\");
         if (Files.exists(serverDir)) {
             Files.list(serverDir)
                     .filter(Files::isRegularFile)
@@ -113,7 +113,7 @@ public class ClientHandler implements Runnable {
 
     private void handleFileDownload(String message) throws IOException {
         String filename = message.substring(9);
-        Path filePath = Paths.get("resources/Server/" + filename);
+        Path filePath = Paths.get("D:\\Documents\\IdeaProjects\\Seventh-Assignment-Socket-Programming\\src\\main\\resources\\Server\\Files\\" + filename);
 
         if (!Files.exists(filePath)) {
             out.println("FILE_NOT_FOUND");
