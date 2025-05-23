@@ -1,8 +1,11 @@
 package Server;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.io.IOException;
 import Shared.User;
+
 public class Server {
     // Predefined users for authentication
     private static final User[] users = {
@@ -17,13 +20,22 @@ public class Server {
     public static ArrayList<ClientHandler> clients = new ArrayList<>();
 
     public static void main(String[] args) throws Exception {
-        // TODO: Create a ServerSocket listening on a port (e.g., 12345)
+        final int PORT = 12345;
 
-        // TODO: Accept incoming client connections in a loop
-        //       For each connection:
-        //       - Create a new ClientHandler object
-        //       - Add it to the 'clients' list
-        //       - Start a new thread to handle communication
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+            System.out.println("Server started on port " + PORT);
+
+            while (true) {
+                Socket clientSocket = serverSocket.accept();
+                System.out.println("New client connected: " + clientSocket.getInetAddress());
+
+                ClientHandler clientHandler = new ClientHandler(clientSocket);
+                clients.add(clientHandler);
+                new Thread(clientHandler).start();
+            }
+        } catch (IOException e) {
+            System.err.println("Server error: " + e.getMessage());
+        }
     }
 
     public static boolean authenticate(String username, String password) {
@@ -33,5 +45,20 @@ public class Server {
             }
         }
         return false;
+    }
+
+    // Broadcast a message to all connected clients
+    public static void broadcastMessage(String message, ClientHandler sender) {
+        for (ClientHandler client : clients) {
+            if (client != sender) {  // Don't send back to sender
+                client.sendMessage(message);
+            }
+        }
+    }
+
+    // Remove a client from the list when they disconnect
+    public static void removeClient(ClientHandler client) {
+        clients.remove(client);
+        System.out.println("Client disconnected. Total clients: " + clients.size());
     }
 }
